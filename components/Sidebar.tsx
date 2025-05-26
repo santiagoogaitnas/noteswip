@@ -9,6 +9,7 @@ interface Folder {
   id: number
   name: string
   color: string | null
+  note_count?: number
 }
 
 interface Tag {
@@ -135,7 +136,10 @@ export default function Sidebar({ selectedFolderId, selectedTagId, onFolderSelec
               }}
             >
               <Folder className="h-4 w-4 mr-2" />
-              {folder.name}
+              <span className="flex-1 text-left">{folder.name}</span>
+              {folder.note_count !== undefined && (
+                <span className="text-xs text-gray-500">{folder.note_count}</span>
+              )}
             </Button>
           ))}
         </div>

@@ -3,7 +3,13 @@ import db from '@/lib/db';
 
 export async function GET() {
   try {
-    const folders = db.prepare('SELECT * FROM folders ORDER BY name').all();
+    const folders = db.prepare(`
+      SELECT f.*, COUNT(n.id) as note_count 
+      FROM folders f 
+      LEFT JOIN notes n ON f.id = n.folder_id 
+      GROUP BY f.id 
+      ORDER BY f.name
+    `).all();
     return NextResponse.json(folders);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch folders' }, { status: 500 });
